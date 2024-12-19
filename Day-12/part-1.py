@@ -5,7 +5,9 @@ sys.setrecursionlimit(10000000)
 
 directions = [(0, 1), (0, -1), (-1, 0), (1, 0)]
 garden = []
-with open("input.txt") as f:
+
+filename = sys.argv[1]
+with open(filename) as f:
     for line in f: garden.append(line.strip()) 
 n, m = len(garden), len(garden[0])
 
@@ -33,6 +35,7 @@ for i in range(n):
         if (i, j) not in visited:
             area, perimeter = 0, 0
             solve((i, j))
+            print(f"{garden[i][j]} {area}")
             ans += (area * perimeter)
 print(ans)
 
