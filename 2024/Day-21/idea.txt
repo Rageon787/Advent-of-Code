@@ -1,0 +1,59 @@
+We must provide instructions to a robot so that it can type on the numeric keypad below
+
+numeric_keypad = {[7, 8, 9],
+                  [4, 5, 6],
+                  [1, 2, 3],
+                  [ , 0, A]}
+
+These instructions are given using the directional keypad 
+directional_keypad = {[" ", ^, "A"], 
+                      ["<", "v", ">"]}
+
+Think of it like a remote controlled device
+
+
+However the catch is, you cannot program this robot directly but instead have to use other robots 
+as proxy to control the robot on the numeric keypad 
+
+The situation is like this 
+
+YOU -> Robot 1 -> Robot 2 -> Target Robot (numerical keypad)
+
+Robot 2 uses a directional keypad to control the target keypad, robot 2 uses another directional keypad to
+instruct robot 1 and then finally you use a directional keypad to instruct robot 2
+
+A very convoluted system isn't it?
+
+You have to find the shortest sequence of instructions that you must type to get the target robot 
+to type the given code
+
+
+Initially the target's robot is on A 
+
+let's say we're given a code 029A, hence our target will press the following sequence of moves?
+
+A -> 0 -> 2 -> 9 -> A
+
+Observe, that we can precompute the shortest instruction (on our directional keypad)
+
+since the shortest path for some (i, i + 1) in our sequence of moves is independent of our previous moves?
+
+This precomputation will help us query in constant time  
+
+for every (i, j) in 0 <= i <= 9 and 0 <= j <= 9, we will find the shortest instruction on our directional keypad
+
+the number of paths on 
+
+To do this we'll have to go through every possible path from one cell to another on the numeric  pad, 
+and pass those paths to robot 2, then generate all the paths 
+
+
+Assuming that the shortest path from one key to another key is just the rise + run
+
+
+The number of cells you have to go up / down + number of cells you have to go left / right
+
+the pair of cells wwith the longest instruction would be (A, 7) or (7, A),  
+(A, 7) -> 3 cells up + 2 cells left = 5 cells 
+
+try every permuation of this sequence? (dx + dy)! = 120 permutations for each 

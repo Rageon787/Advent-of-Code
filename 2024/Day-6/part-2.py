@@ -4,26 +4,44 @@ directions = [(-1, 0), (0, 1), (1, 0), (0, -1)] # up -> right -> down -> left
 
 grid = [] 
 visited = set()
-with open("input.txt", "r") as f:
+filename = sys.argv[1]
+with open(filename) as f:
     for line in f:
         grid.append(list(line.strip("\n")))
-
+ans2 = set()
 def simulate(pos, direction):
     (i, j) = pos                        # Position vector 
     (x, y) = directions[direction]      # direction vector
-
     if (i, j, direction) in visited:
        return 
     visited.add((i, j, direction))
     grid[i][j] = 'X'
 
-    if i + x >= n or j + y >= m or i + x < 0 or j + y < 0:      # The Guard is out of the grid
+    if i + x not in range(n) or j + y not in range(m):      # The Guard is out of the grid
         return 
 
     if grid[i + x][j + y] == "#":                                # guard has hit an obstruction on the current direction
-        print(f"{i} {j} {direction}")
         simulate((i, j), (direction + 1) % 4)              # Turn 90 degrees to the right 
     else: 
+        grid[i + x][j + y] = '#'
+        di, dj, changed_direction = i, j, (direction + 1) % 4 
+        visited2 = set()
+        escaped = False
+        while True:
+            dx, dy = directions[changed_direction] 
+            if (di, dj, changed_direction) in visited2:
+                break
+            visited2.add((di, dj, changed_direction))
+            if di + dx not in range(n) or dj + dy not in range(m):
+                escaped = True 
+                break 
+            elif grid[di + dx][dj + dy] == '#':
+                changed_direction = (changed_direction + 1) % 4
+            else:
+                di += dx 
+                dj += dy
+        if not escaped: ans2.add((i, j))
+        grid[i + x][j + y] = '.' 
         simulate((i + x, j + y), direction)                # Move in the same direction 
     return
     
@@ -42,4 +60,4 @@ ans = 0
 for i in range(n):
     for j in range(m):
         if grid[i][j] == 'X': ans += 1
-print(ans)
+print(len(ans2)) 

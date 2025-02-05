@@ -1,0 +1,81 @@
+Register A: 2024
+Register B: 0
+Register C: 0
+
+Program: 2,4,1,2,7,5,1,7,4,4,0,3,5,5,3,0
+
+Instruction 0:
+bst operand = 4
+combo = A  
+B = B % A           # Brute force A to find 
+
+
+instruction 1: bxl
+bxl, operand = 1 
+combo = 1
+B ^= 1 
+
+
+instruction 2: 
+cdv, operand = 5
+combo = B
+C = A >> B            right shift of A by B  
+
+instruction 3:
+bxl, operand = 7
+B ^= 7
+abc
+111 
+
+instruction 4:
+bxc, operand = 4 
+B^=C                # the last 3 bits must be equal to program[i] after this instruction
+
+therfore the last 3 bits of C must either be 0 or B^=C^=B
+
+
+instruction 5:
+adv, operand = 3 
+A >> 3           # Before A became 0 here, it must've been some number in [0, 7] 
+
+instruction 6:
+out, operand = 5
+print(B % 8)        # last 3 bits of B must be equal to program[i]
+
+instruction 7:
+jnz, operand = 0
+goto instruction 0 if A != 0 
+else stop here 
+
+
+
+
+
+
+
+
+ B
+^C
+ 101
+
+B^7  101    000
+     000    101
+     --- or --- 
+     101    101
+
+if B^7 == 101       or if B^7 == 0
+then, B = 010          then, B = 111
+
+
+
+
+C = A >> B 
+we know that B = ?...?010 and C = ?...?000 
+000 = ?????? >> B
+
+Then A = ?000??
+
+
+
+
+

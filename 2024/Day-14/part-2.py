@@ -9,36 +9,31 @@ with open("input.txt") as f:
         nums = [int(x) for x in nums]
         p, v = (nums[1], nums[0]), (nums[3], nums[2])
         robots.append([p, v]) 
-
+print(len(robots))
 old_grid = [[0] * m for _ in range(n)]  
 for robot in robots:  
     old_grid[robot[0][0]][robot[0][1]] += 1
 
+
 curr_time = 0
-while curr_time < 10000:
+while curr_time < 100:
     for robot in robots:
         (x, y), (dx, dy) = robot  
         robot[0] = [((x + dx) + n) % n, ((y + dy) + m) % m]
-        
     curr_time += 1
-    new_grid = [[0] * m for _ in range(n)]  
-    for robot in robots:  
-        new_grid[robot[0][0]][robot[0][1]] += 1
-    tree = []
-    ok = True 
-    for i in range(n):
-        temp = ""
-        for j in range(m):
-            if new_grid[i][j] > 0: temp += '1'
-        if len(tree) > 0 and len(temp) < len(tree[-1]):
-            ok = False 
-            break
-        tree.append(temp) 
-        if len(tree[-1]) == m: break 
-    if ok:
-        print(curr_time) 
-        for t in tree: print(t)
-        print()
+    visited = set()
+    count_component = 0
+    for robot in robots:
+        if robot not in visited:  
+            count_component += 1
+            dfs(robot[0], visited, )
+    if count_component == 1:
+        print(curr_time)
+        break
+
+        
+
+    
 new_grid = [[0] * m for _ in range(n)]  
 for robot in robots:  
     new_grid[robot[0][0]][robot[0][1]] += 1
@@ -60,3 +55,4 @@ ans = 1
 for i in range(2):
     for j in range(2): ans *= quadrant[i][j]
 
+print(ans)
